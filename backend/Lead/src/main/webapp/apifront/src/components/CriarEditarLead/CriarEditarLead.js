@@ -21,6 +21,7 @@ useEffect(() => {
         axios.post(baseUrl, data).then((response) => {
         alert("Lead criado com sucesso!")
         setShowCreateModal(false)
+        form.resetFields()
         reLoad()
         console.log(response)})})
   };
