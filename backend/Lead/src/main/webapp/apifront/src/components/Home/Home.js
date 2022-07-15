@@ -1,11 +1,25 @@
-import React from 'react'
-import { Breadcrumb, Layout, Menu } from 'antd';
+import React, {useState, useEffect} from 'react'
+import { Layout, Button } from 'antd';
+import { ListaLeads, CriarEditarLead } from '../../components/';
+import axios from 'axios';
 
 import './Home.scss'
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
+
+const baseUrl = 'http://localhost:8080/lead';
 
 const Home = () => {
+const [showCreateModal, setShowCreateModal] = useState(false)
+const [actionType, setActionType] = useState(null)
+const [lead, setLead] = useState([])
+const [editData, setEditData] = useState(null)
+
+    useEffect(() => {
+        axios.get(baseUrl).then((response) => {
+        setLead(response.data)})
+    }, [])
+
 
 return (
 <Layout>
@@ -17,15 +31,6 @@ return (
       }}
     >
       <div className="logo" />
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={['2']}
-        items={new Array(3).fill(null).map((_, index) => ({
-          key: String(index + 1),
-          label: `nav ${index + 1}`,
-        }))}
-      />
     </Header>
     <Content
       className="site-layout"
@@ -34,15 +39,6 @@ return (
         marginTop: 64,
       }}
     >
-      <Breadcrumb
-        style={{
-          margin: '16px 0',
-        }}
-      >
-        <Breadcrumb.Item>Home</Breadcrumb.Item>
-        <Breadcrumb.Item>List</Breadcrumb.Item>
-        <Breadcrumb.Item>App</Breadcrumb.Item>
-      </Breadcrumb>
       <div
         className="site-layout-background"
         style={{
@@ -50,16 +46,27 @@ return (
           minHeight: 380,
         }}
       >
-        Content
+        <Button className="criar" type="default" onClick={() => {setShowCreateModal(true); setActionType('criar')}}>
+        Criar novo lead
+        </Button>
+        <CriarEditarLead
+        showCreateModal={showCreateModal}
+        setShowCreateModal={setShowCreateModal}
+        actionType={actionType}
+        setActionType={setActionType}
+        baseUrl={baseUrl}
+        initialValues={editData}
+        setLead={setLead}
+        />
+        <ListaLeads
+        setShowCreateModal={setShowCreateModal}
+        setActionType={setActionType}
+        baseUrl={baseUrl}
+        setEditData={setEditData}
+        lead={lead}
+        setLead={setLead}/>
       </div>
     </Content>
-    <Footer
-      style={{
-        textAlign: 'center',
-      }}
-    >
-      Ant Design ©2018 Created by Ant UED
-    </Footer>
   </Layout>
   )
 

@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/lead")
+@CrossOrigin("*")
 public class LeadController {
 
     @Autowired

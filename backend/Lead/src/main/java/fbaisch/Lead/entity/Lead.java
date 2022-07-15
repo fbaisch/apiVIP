@@ -29,7 +29,7 @@ public class Lead implements Serializable {
     private String nascimento;
 
     @Column(name = "telefone")
-    private Integer telefone;
+    private String telefone;
 
 
 
